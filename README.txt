@@ -8,13 +8,13 @@ Features:
 Functions:
 'type' is what type of data, 'left_controller'. 'right_controller', and 'headset'
 - Uses the new "vr" global, currently only supports host player
-	vr.isPlayerVr() : bool
-	vr.getLookingAngle(String type) : Vec3
-	vr.getPitch(String type) : float
-	vr.getYaw(String type) : float
-	vr.getRoll(String type) : float
-	vr.getPosition(String type) : Vec3
-	vr.getRotationMatrix(String type) : Matrix4f
+	vr:isPlayerVr() : bool
+	vr:getLookingAngle(String type) : Vec3
+	vr:getPitch(String type) : float
+	vr:getYaw(String type) : float
+	vr:getRoll(String type) : float
+	vr:getPosition(String type) : Vec3
+	vr:getRotationMatrix(String type) : Matrix4f
 
 Warning!
 - I have not gotten the chance to test this in VR yet, only non-vr mode on vivecraft, so please keep in mind this may be buggy currently
