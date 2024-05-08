@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Matrix4f;
 import net.blf02.vrapi.api.IVRAPI;
 import net.blf02.vrapi.api.data.IVRData;
+import net.blf02.vrapi.api.data.IVRPlayer;
 import net.blf02.vrapi.common.VRAPI;
 import net.blf02.vrapi.data.VRData;
 import net.minecraft.client.GuiMessage;
@@ -65,12 +66,14 @@ public class FiguraCompat {
     public IVRData getData(String type) {
         vrApi = VRPlugin.vrAPI;
         player = Minecraft.getInstance().player;
+        IVRPlayer vrPlayer = vrApi.getVRPlayer(player);
+        if (vrPlayer == null) return null;
         if (Objects.equals(type, "left_controller")) {
-            return vrApi.getVRPlayer(player).getController(1);
+            return vrPlayer.getController(1);
         } else if (Objects.equals(type, "right_controller")) {
-            return vrApi.getVRPlayer(player).getController(0);
+            return vrPlayer.getController(0);
         } else if (Objects.equals(type, "headset")) {
-            return vrApi.getVRPlayer(player).getHMD();
+            return vrPlayer.getHMD();
         } else {
             return null;
         }
@@ -95,46 +98,40 @@ public class FiguraCompat {
     @LuaMethodDoc("vr.get_pitch")
     public float getPitch(@LuaNotNil String type) {
         IVRData vrData = getData(type);
-        if (vrData != null) {
-            return vrData.getPitch();
-        } else return -1;
+        if (vrData == null) return -1;
+        return vrData.getPitch();
 
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_yaw")
     public float getYaw(@LuaNotNil String type) {
         IVRData vrData = getData(type);
-        if (vrData != null) {
-            return vrData.getYaw();
-        } else return -1;
+        if (vrData == null) return -1;
+        return vrData.getYaw();
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_roll")
     public float getRoll(@LuaNotNil String type) {
         IVRData vrData = getData(type);
-        if (vrData != null) {
-            return vrData.getRoll();
-        } else return -1;
+        if (vrData == null) return -1;
+        return vrData.getRoll();
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_position")
     public FiguraVec3 getPosition(@LuaNotNil String type) {
         IVRData vrData = getData(type);
-        if (vrData != null) {
-            return FiguraVec3.fromVec3(vrData.position());
-        } else return null;
+        if (vrData == null) return null;
+        return FiguraVec3.fromVec3(vrData.position());
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_rotation_matrix")
     public FiguraMat4 getRotationMatrix(@LuaNotNil String type) {
         IVRData vrData = getData(type);
+        if (vrData == null) return null;
         Matrix4f mat = vrData.getRotationMatrix();
         FiguraMat4 matNew = new FiguraMat4();
         matNew.set(mat);
-        if (vrData != null) {
-            return matNew;
-        } else return null;
-
+        return matNew;
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.blank")
