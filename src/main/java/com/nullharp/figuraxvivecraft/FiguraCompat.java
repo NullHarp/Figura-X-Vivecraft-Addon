@@ -39,6 +39,8 @@ import org.figuramc.figura.lua.docs.LuaFieldDoc;
 import org.figuramc.figura.lua.docs.LuaMethodDoc;
 import org.figuramc.figura.lua.docs.LuaMethodOverload;
 import org.figuramc.figura.lua.docs.LuaTypeDoc;
+import org.figuramc.figura.math.matrix.FiguraMat4;
+import org.figuramc.figura.math.matrix.FiguraMatrix;
 import org.figuramc.figura.math.vector.FiguraVec3;
 import org.figuramc.figura.mixin.LivingEntityAccessor;
 import org.figuramc.figura.mixin.gui.ChatComponentAccessor;
@@ -61,12 +63,13 @@ public class FiguraCompat {
     IVRAPI vrApi = VRPlugin.vrAPI;
 
     public IVRData getData(String type) {
+        vrApi = VRPlugin.vrAPI;
         player = Minecraft.getInstance().player;
-        if (type == "left_controller") {
+        if (Objects.equals(type, "left_controller")) {
             return vrApi.getVRPlayer(player).getController(1);
-        } else if (type == "right_controller") {
+        } else if (Objects.equals(type, "right_controller")) {
             return vrApi.getVRPlayer(player).getController(0);
-        } else if (type == "headset") {
+        } else if (Objects.equals(type, "headset")) {
             return vrApi.getVRPlayer(player).getHMD();
         } else {
             return null;
@@ -82,10 +85,11 @@ public class FiguraCompat {
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_look_angle")
-    public Vec3 getLookAngle(@LuaNotNil String type) {
+    public FiguraVec3  getLookAngle(@LuaNotNil String type) {
         IVRData vrData = getData(type);
         if (vrData == null) return null;
-        return vrData.getLookAngle();
+        return FiguraVec3.fromVec3(vrData.getLookAngle());
+
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_pitch")
@@ -114,18 +118,21 @@ public class FiguraCompat {
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_position")
-    public Vec3 getPosition(@LuaNotNil String type) {
+    public FiguraVec3 getPosition(@LuaNotNil String type) {
         IVRData vrData = getData(type);
         if (vrData != null) {
-            return vrData.position();
+            return FiguraVec3.fromVec3(vrData.position());
         } else return null;
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_rotation_matrix")
-    public Matrix4f getRotationMatrix(@LuaNotNil String type) {
+    public FiguraMat4 getRotationMatrix(@LuaNotNil String type) {
         IVRData vrData = getData(type);
+        Matrix4f mat = vrData.getRotationMatrix();
+        FiguraMat4 matNew = new FiguraMat4();
+        matNew.set(mat);
         if (vrData != null) {
-            return vrData.getRotationMatrix();
+            return matNew;
         } else return null;
 
     }
