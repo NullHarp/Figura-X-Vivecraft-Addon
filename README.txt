@@ -9,7 +9,7 @@ Functions:
 'type' is what type of data, 'left_controller'. 'right_controller', and 'headset'
 - Uses the new "vr" global, currently only supports host player
 	vr.isPlayerVr() : bool
-	vr.getLookingAngle(String type) : Vec3
+	vr.getLookAngle(String type) : Vec3
 	vr.getPitch(String type) : float
 	vr.getYaw(String type) : float
 	vr.getRoll(String type) : float

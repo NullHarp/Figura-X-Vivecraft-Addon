@@ -58,13 +58,14 @@ import java.util.*;
 )
 public class FiguraCompat {
     Player player = Minecraft.getInstance().player;
-    IVRAPI vrApi = VRAPI.VRAPIInstance;
+    IVRAPI vrApi = VRPlugin.vrAPI;
 
     public IVRData getData(String type) {
+        player = Minecraft.getInstance().player;
         if (type == "left_controller") {
-            return vrApi.getVRPlayer(player).getController(0);
-        } else if (type == "right_controller") {
             return vrApi.getVRPlayer(player).getController(1);
+        } else if (type == "right_controller") {
+            return vrApi.getVRPlayer(player).getController(0);
         } else if (type == "headset") {
             return vrApi.getVRPlayer(player).getHMD();
         } else {
@@ -76,15 +77,15 @@ public class FiguraCompat {
     @LuaWhitelist
     @LuaMethodDoc("vr.is_player_vr")
     public boolean isPlayerVr() {
+
         return vrApi.playerInVR(player);
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_look_angle")
     public Vec3 getLookAngle(@LuaNotNil String type) {
         IVRData vrData = getData(type);
-        if (vrData != null) {
-            return vrData.getLookAngle();
-        } else return null;
+        if (vrData == null) return null;
+        return vrData.getLookAngle();
     }
     @LuaWhitelist
     @LuaMethodDoc("vr.get_pitch")
@@ -129,7 +130,8 @@ public class FiguraCompat {
 
     }
     @LuaWhitelist
-    @LuaMethodDoc("vr.")
-    public void blank() {
+    @LuaMethodDoc("vr.blank")
+    public String blank(@LuaNotNil String type) {
+        return type;
     }
 }
