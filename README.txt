@@ -1,1 +1,2 @@
 Hello, I made this project so that you can use Mc VR API mod that integrates with Vivecraft with Figura, please note this is highly experimental and may have any bugs, should you find any, please create a new Issue and I shall see what I can do.
+IN ADDITION, docs are coming Soon :tm:, after the initial testing phase where I work out any major bugs.
